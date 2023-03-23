@@ -12,6 +12,7 @@ var ENV_PATH = ".env"
 func main() {
 	utils.LoadConfig(ENV_PATH)
 
-	gorm := postgres.New(postgres.DefaultCfg("homework"))
-	fmt.Println(gorm)
+	gorm := postgres.New()
+
+	
 }

@@ -12,8 +12,8 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-func New(cfg Config) *gorm.DB {
-	connector := &pqsqlConn{cfg: cfg}
+func New() *gorm.DB {
+	connector := &pqsqlConn{cfg:defaultCfg()}
 	return connector.Open()
 }
 
@@ -27,7 +27,7 @@ func (p *pqsqlConn) Open() *gorm.DB {
 }
 
 func (p *pqsqlConn) Connect(dsn string) *gorm.DB {
-	db, err := sql.Open(string(pq), dsn)
+	db, err := sql.Open("postgres", dsn)
 	if err != nil {
 		panic(err)
 	}
@@ -135,9 +135,9 @@ func (c *Config) build(options []option) string {
 	return strings.Join(params, " ")
 }
 
-func DefaultCfg(dbnName string) Config {
+func defaultCfg() Config {
 	return Config{
-		DBName: dbnName,
+		DBName: utils.GetConfigToString("Host"),
 		Host:   utils.GetConfigToString("Host"),
 		Port:   int(utils.GetConfigToInt("Port")),
 		SSL: SSL{
