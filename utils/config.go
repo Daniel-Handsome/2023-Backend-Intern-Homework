@@ -54,11 +54,9 @@ func LoadConfig(path string) {
 }
 
 func GetConfigToString(key string) string {
-	vacct := reflect.ValueOf(App)
-    return vacct.FieldByName("id").String()
+	return reflect.ValueOf(App).Elem().FieldByName(key).String()
 }
 
 func GetConfigToInt(key string) int64 {
-	vacct := reflect.ValueOf(App)
-    return vacct.FieldByName("id").Int()
+	return reflect.ValueOf(App).Elem().FieldByName(key).Int()
 }
