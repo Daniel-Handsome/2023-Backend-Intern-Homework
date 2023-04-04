@@ -14,7 +14,7 @@ import (
 
 var db *sql.DB
 
-func InitDatabase(config utils.Config) (db *sql.DB, err error) {
+func initDatabase(config utils.Config) (db *sql.DB, err error) {
 	dsn := fmt.Sprintf("%s://%s:%s@%v:%v/%s?sslmode=disable",
 		config.Connection,
 		config.Username,
@@ -37,22 +37,6 @@ func InitDatabase(config utils.Config) (db *sql.DB, err error) {
 func Close() {
 	db.Close()
 }
-
-// func test(dbdsn string) {
-// 	m, err := migrate.New(
-//         "file://db/migrations",
-//         dbdsn)
-
-//     if err != nil {
-// 		log.Fatal(err.Error())
-// 	}
-
-// 	if err := m.Up(); err != nil  && err != migrate.ErrNoChange {
-// 		log.Fatal(err.Error())
-// 	}
-
-// 	log.Println("success to migrate")
-// }
 
 func initMigrate(db *sql.DB, database string) error {
 	driver, err := postgres.WithInstance(db, &postgres.Config{})

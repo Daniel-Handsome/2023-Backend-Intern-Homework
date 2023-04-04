@@ -1,0 +1,7 @@
+- id: 1
+  uuid: 01ab119f-5345-46e4-bac2-a1d0698c40ec
+  token: test
+  name: test
+  email: test@example.com
+  created_at: RAW=now()
+  updated_at: RAW=now()

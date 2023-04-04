@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "github.com/Daniel-Handsome/2023-Backend-intern-Homework/pb";
+
+service articleService {
+  // GetArticlesPage: get user articles page
+  rpc GetArticlesPage(GetArticlesPageReq) returns (GetArticlesPageRes);
+}
+
+message GetArticlesPageReq {
+  string headKey = 1;
+}
+
+message GetArticlesPageRes {
+  repeated Article articles = 1;
+  string nexPageKey = 2;
+}
+
+message Article {
+  string uuid = 1;
+  string title = 2;
+  string content = 3;
+}

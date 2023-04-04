@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "github.com/Daniel-Handsome/2023-Backend-intern-Homework/pb";
+
+
+service UserService {
+  // GetUserArticlesHeadKey: user articles first page key
+  rpc GetUserArticlesHeadKey(GetUserArticlesHeadKeyReq) returns (GetUserArticlesHeadKeyRes);
+}
+
+
+message GetUserArticlesHeadKeyReq {
+  string user_id = 1;
+}
+
+message GetUserArticlesHeadKeyRes {
+  string articlePageHeadKey = 1;
+}
+

@@ -1,0 +1,7 @@
+- id: 1
+  uuid: RAW=uuid_generate_v4()
+  user_id: 1
+  type: 0
+  head: 7e0156f8-38e5-45b6-9801-844bda55f270
+  created_at: RAW=now()
+  updated_at: RAW=now()

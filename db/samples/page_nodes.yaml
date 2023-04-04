@@ -1,0 +1,15 @@
+- id: 1
+  uuid: 7e0156f8-38e5-45b6-9801-844bda55f270
+  previous:
+  next: 39988b34-e7ff-4cad-99e1-5fe25dc5259c
+  article_ids: RAW='{1,2}'
+  created_at: RAW=now()
+  updated_at: RAW=now()
+
+- id: 2
+  uuid: 39988b34-e7ff-4cad-99e1-5fe25dc5259c
+  previous: 7e0156f8-38e5-45b6-9801-844bda55f270
+  next:
+  article_ids: RAW='{3,4}'
+  created_at: RAW=now()
+  updated_at: RAW=now()
