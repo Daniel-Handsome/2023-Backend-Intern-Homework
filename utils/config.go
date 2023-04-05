@@ -16,16 +16,21 @@ type Config struct {
 }
 
 type DB struct {
-	Connection string `mapstructure:"DB_CONNECTION"`
-	Host string `mapstructure:"DB_HOST"`
-	Port int32 `mapstructure:"DB_PORT"`
-	Database string `mapstructure:"DB_DATABASE"`
-	Username string `mapstructure:"DB_USERNAME"`
-	Password string `mapstructure:"DB_PASSWORD"`
-	Token_symmetric_key string `mapstructure:"TOKEN_SYMMETRIC_KEY"`
-	Access_token_duration time.Duration `mapstructure:"ACCESS_TOKEN_DURATION"`
+	Connection             string        `mapstructure:"DB_CONNECTION"`
+	Host                   string        `mapstructure:"DB_HOST"`
+	Port                   int32         `mapstructure:"DB_PORT"`
+	Database               string        `mapstructure:"DB_DATABASE"`
+	Username               string        `mapstructure:"DB_USERNAME"`
+	Password               string        `mapstructure:"DB_PASSWORD"`
+	Token_symmetric_key    string        `mapstructure:"TOKEN_SYMMETRIC_KEY"`
+	Access_token_duration  time.Duration `mapstructure:"ACCESS_TOKEN_DURATION"`
 	Refresh_token_duration time.Duration `mapstructure:"REFRESH_TOKEN_DURATION"`
-	Grpc_port int32 `mapstructure:"GRPC_PORT"`
+	Grpc_port              int32         `mapstructure:"GRPC_PORT"`
+	Redis_ip               string        `mapstructure:"REDIS_IP"`
+	Redis_db_id            int32         `mapstructure:"REDIS_DB_ID"`
+	Redis_port             int32         `mapstructure:"REDIS_PORT"`
+	Redis_username         string        `mapstructure:"REDIS_USERNAME"`
+	redis_password         string        `mapstructure:"REDIS_PASSWORD"`
 }
 
 func LoadConfig(path string) {
@@ -40,7 +45,7 @@ func LoadConfig(path string) {
 	}
 
 	err = viper.Unmarshal(&config)
-	if err!= nil {
+	if err != nil {
 		panic("unable to unmarshal config")
 	}
 

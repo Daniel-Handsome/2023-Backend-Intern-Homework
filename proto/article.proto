@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "github.com/Daniel-Handsome/2023-Backend-intern-Homework/pb";
+
+import "google/protobuf/timestamp.proto";
+
+service articleService {
+  // GetArticlesPage: get user articles page
+  rpc GetArticlesPage(GetArticlesPageReq) returns (GetArticlesPageRes);
+  // setArticlesPage: set user articles page
+  rpc UpdateArticlesPage(UpdateArticlesPageReq) returns (UpdateArticlesPageRes);
+}
+
+message GetArticlesPageReq {
+  string headKey = 1;
+}
+
+message GetArticlesPageRes {
+  repeated Article articles = 1;
+  string nexPageKey = 2;
+}
+
+message UpdateArticlesPageReq {
+  OrderColumn orderColumns = 1;
+}
+
+message UpdateArticlesPageRes{};
+
+enum OrderColumn {
+  ID = 0;
+  CreateAt = 1;
+  UpdateAt = 2;
+}
+
+message Article {
+  string uuid = 1;
+  string title = 2;
+  string content = 3;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp update_at = 8;
+}
