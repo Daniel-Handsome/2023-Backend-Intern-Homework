@@ -6,20 +6,31 @@ import (
 	"github.com/golang/protobuf/ptypes/timestamp"
 )
 
-func ArticleToProto(infos []model.Article) []*pb.Article {
+func ProtoToOrderColumn(v pb.OrderColumn) model.OrderColumn {
+	switch v {
+	case pb.OrderColumn_CreateAt:
+		return model.CreateAt
+	case pb.OrderColumn_UpdateAt:
+		return model.UpdateAt
+	default:
+		return model.Id
+	}
+}
+
+func ArticlesToProto(articles []model.Article) []*pb.Article {
 	var result []*pb.Article
-	for _, val := range infos {
-		result = append(result, PostInfoToProto(val))
+	for _, article := range articles {
+		result = append(result, ArticleToProto(article))
 	}
 	return result
 }
 
 func ArticleToProto(article model.Article) *pb.Article {
 	return &pb.Article{
-		Uuid:        article.Uuid,
-		Title:       article.Title,
-		Content:     article.Content,
-		PostStartAt: &timestamp.Timestamp{Seconds: data.PostStartAt.Unix()},
-		PostEndAt:   &timestamp.Timestamp{Seconds: data.PostEndAt.Unix()},
+		Uuid:      article.Uuid,
+		Title:     article.Title,
+		Content:   article.Content,
+		CreatedAt: &timestamp.Timestamp{Seconds: article.CreatedAt.Unix()},
+		UpdateAt:  &timestamp.Timestamp{Seconds: article.UpdatedAt.Unix()},
 	}
 }

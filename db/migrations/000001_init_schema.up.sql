@@ -34,6 +34,7 @@ CREATE TABLE "articles" (
     "uuid" uuid UNIQUE NOT NULL,
     "title" varchar NOT NULL,
     "content" varchar NOT NULL,
+    "sort" smallint NOT NULL,
     "created_at" timestamptz NOT NULL DEFAULT(now()),
     "updated_at" timestamptz NOT NULL DEFAULT(now()),
     "deleted_at" timestamptz NULL

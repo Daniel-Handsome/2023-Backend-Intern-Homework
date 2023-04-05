@@ -1,4 +1,4 @@
-package main
+package app
 
 import (
 	"context"
@@ -8,40 +8,38 @@ import (
 	"os/signal"
 	"syscall"
 
+	pbHealth "google.golang.org/grpc/health/grpc_health_v1"
+
 	"github.com/Daniel-Handsome/2023-Backend-intern-Homework/internal/Interceptor"
 	"github.com/Daniel-Handsome/2023-Backend-intern-Homework/pb"
 	"github.com/Daniel-Handsome/2023-Backend-intern-Homework/pkg/repote"
+	"github.com/Daniel-Handsome/2023-Backend-intern-Homework/repository"
 	"github.com/Daniel-Handsome/2023-Backend-intern-Homework/service/article"
 	"github.com/Daniel-Handsome/2023-Backend-intern-Homework/service/user"
+	trasnportArticle "github.com/Daniel-Handsome/2023-Backend-intern-Homework/transport/article"
+	trasnportUser "github.com/Daniel-Handsome/2023-Backend-intern-Homework/transport/user"
+	"github.com/Daniel-Handsome/2023-Backend-intern-Homework/utils"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
-	pbHealth "google.golang.org/grpc/health/grpc_health_v1"
-
-	"github.com/Daniel-Handsome/2023-Backend-intern-Homework/db"
-	"github.com/Daniel-Handsome/2023-Backend-intern-Homework/repository"
-	trasnportArticle "github.com/Daniel-Handsome/2023-Backend-intern-Homework/transport/article"
-	trasnportUser "github.com/Daniel-Handsome/2023-Backend-intern-Homework/transport/user"
-	"github.com/Daniel-Handsome/2023-Backend-intern-Homework/utils"
 	"google.golang.org/grpc/reflection"
+	"gorm.io/gorm"
 )
 
-var ENV_PATH = ".env"
+type App struct {
+	gorm *gorm.DB
+}
 
-func main() {
-	utils.LoadConfig(ENV_PATH)
+func NewApp(gorm *gorm.DB) *App {
+	return &App{gorm: gorm}
+}
 
-	gorm := db.New()
-
-	// fake data to use
-	sqlDB, _ := gorm.DB()
-	db.SetUpSample(sqlDB)
-
-	userRepo := repository.NewUserRepository(gorm)
-	pageLinkedListRepo := repository.NewPageLinkedListRepository(gorm)
-	articleRepo := repository.NewArticleRepository(gorm)
-	pageNodeRepo := repository.NewPageNodeRepository(gorm)
+func (a *App) Start() {
+	userRepo := repository.NewUserRepository(a.gorm)
+	pageLinkedListRepo := repository.NewPageLinkedListRepository(a.gorm)
+	articleRepo := repository.NewArticleRepository(a.gorm)
+	pageNodeRepo := repository.NewPageNodeRepository(a.gorm)
 
 	userSrv := user.NewUserService(userRepo)
 	articleSrv := article.NewArticleService(articleRepo, pageLinkedListRepo, pageNodeRepo)

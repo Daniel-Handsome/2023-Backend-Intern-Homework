@@ -10,6 +10,7 @@ import (
 
 type PageLinkedListRepository interface {
 	GetByHeadKey(ctx context.Context, headKey string) (pageLinkedList model.PageLinkedList, err error)
+	GetByType(ctx context.Context, t model.PageLinkedListType) (pageLinkedLists []model.PageLinkedList, err error)
 }
 
 type pageLinkedListRepository struct {
@@ -28,6 +29,19 @@ func (repo pageLinkedListRepository) GetByHeadKey(ctx context.Context, headKey s
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return pageLinkedList, ErrUserNotFound
 		}
+	}
+
+	return
+}
+
+func (repo pageLinkedListRepository) GetByType(ctx context.Context, t model.PageLinkedListType) (pageLinkedLists []model.PageLinkedList, err error) {
+	err = repo.orm.WithContext(ctx).
+		Model(model.PageLinkedList{}).
+		Where("type = ?", t).
+		Find(&pageLinkedLists).
+		Error
+	if err != nil {
+		return pageLinkedLists, err
 	}
 
 	return

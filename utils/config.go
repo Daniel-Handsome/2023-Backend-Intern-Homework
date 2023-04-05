@@ -26,6 +26,11 @@ type DB struct {
 	Access_token_duration  time.Duration `mapstructure:"ACCESS_TOKEN_DURATION"`
 	Refresh_token_duration time.Duration `mapstructure:"REFRESH_TOKEN_DURATION"`
 	Grpc_port              int32         `mapstructure:"GRPC_PORT"`
+	Redis_ip               string        `mapstructure:"REDIS_IP"`
+	Redis_db_id            int32         `mapstructure:"REDIS_DB_ID"`
+	Redis_port             int32         `mapstructure:"REDIS_PORT"`
+	Redis_username         string        `mapstructure:"REDIS_USERNAME"`
+	redis_password         string        `mapstructure:"REDIS_PASSWORD"`
 }
 
 func LoadConfig(path string) {

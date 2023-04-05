@@ -27,5 +27,5 @@
   title: four
   sort: 2
   content: four content
-  created_at: RAW=now()
+  created_at: RAW=now() - INTERVAL '1 Day'
   updated_at: RAW=now()

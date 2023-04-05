@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 
+	"github.com/Daniel-Handsome/2023-Backend-intern-Homework/internal/Error"
 	"github.com/Daniel-Handsome/2023-Backend-intern-Homework/pb"
 	"github.com/Daniel-Handsome/2023-Backend-intern-Homework/service/user"
 )
@@ -18,7 +19,7 @@ func NewGrpcServer(srv user.UserService) *GrpcServer {
 func (g GrpcServer) GetUserArticlesHeadKey(ctx context.Context, req *pb.GetUserArticlesHeadKeyReq) (*pb.GetUserArticlesHeadKeyRes, error) {
 	userArticlesPageKey, err := g.srv.GetUserArticlesHeadKey(ctx, req.GetUserId())
 	if err != nil {
-		return nil, err
+		return nil, Error.ErrServerError.Error(err)
 	}
 
 	return &pb.GetUserArticlesHeadKeyRes{ArticlePageHeadKey: userArticlesPageKey}, nil

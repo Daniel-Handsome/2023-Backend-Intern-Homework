@@ -24,6 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type ArticleServiceClient interface {
 	// GetArticlesPage: get user articles page
 	GetArticlesPage(ctx context.Context, in *GetArticlesPageReq, opts ...grpc.CallOption) (*GetArticlesPageRes, error)
+	// setArticlesPage: set user articles page
+	UpdateArticlesPage(ctx context.Context, in *UpdateArticlesPageReq, opts ...grpc.CallOption) (*UpdateArticlesPageRes, error)
 }
 
 type articleServiceClient struct {
@@ -43,12 +45,23 @@ func (c *articleServiceClient) GetArticlesPage(ctx context.Context, in *GetArtic
 	return out, nil
 }
 
+func (c *articleServiceClient) UpdateArticlesPage(ctx context.Context, in *UpdateArticlesPageReq, opts ...grpc.CallOption) (*UpdateArticlesPageRes, error) {
+	out := new(UpdateArticlesPageRes)
+	err := c.cc.Invoke(ctx, "/proto.articleService/UpdateArticlesPage", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ArticleServiceServer is the server API for ArticleService service.
 // All implementations should embed UnimplementedArticleServiceServer
 // for forward compatibility
 type ArticleServiceServer interface {
 	// GetArticlesPage: get user articles page
 	GetArticlesPage(context.Context, *GetArticlesPageReq) (*GetArticlesPageRes, error)
+	// setArticlesPage: set user articles page
+	UpdateArticlesPage(context.Context, *UpdateArticlesPageReq) (*UpdateArticlesPageRes, error)
 }
 
 // UnimplementedArticleServiceServer should be embedded to have forward compatible implementations.
@@ -57,6 +70,9 @@ type UnimplementedArticleServiceServer struct {
 
 func (UnimplementedArticleServiceServer) GetArticlesPage(context.Context, *GetArticlesPageReq) (*GetArticlesPageRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetArticlesPage not implemented")
+}
+func (UnimplementedArticleServiceServer) UpdateArticlesPage(context.Context, *UpdateArticlesPageReq) (*UpdateArticlesPageRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateArticlesPage not implemented")
 }
 
 // UnsafeArticleServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -88,6 +104,24 @@ func _ArticleService_GetArticlesPage_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ArticleService_UpdateArticlesPage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateArticlesPageReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArticleServiceServer).UpdateArticlesPage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.articleService/UpdateArticlesPage",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArticleServiceServer).UpdateArticlesPage(ctx, req.(*UpdateArticlesPageReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ArticleService_ServiceDesc is the grpc.ServiceDesc for ArticleService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +132,10 @@ var ArticleService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetArticlesPage",
 			Handler:    _ArticleService_GetArticlesPage_Handler,
+		},
+		{
+			MethodName: "UpdateArticlesPage",
+			Handler:    _ArticleService_UpdateArticlesPage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -3,6 +3,8 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"path/filepath"
+	"runtime"
 
 	"github.com/Daniel-Handsome/2023-Backend-intern-Homework/utils"
 	_ "github.com/lib/pq"
@@ -44,8 +46,12 @@ func initMigrate(db *sql.DB, database string) error {
 		return err
 	}
 
+	_, file, _, _ := runtime.Caller(0)
+	dir := filepath.Dir(file) + "/migrations"
+	migrationPath := "file://" + dir
+
 	m, err := migrate.NewWithDatabaseInstance(
-		"file://db/migrations",
+		migrationPath,
 		database,
 		driver,
 	)
