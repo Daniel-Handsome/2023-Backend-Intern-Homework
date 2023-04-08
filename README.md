@@ -38,9 +38,14 @@ jkf-star
 ```
 
 ## docker start
+將.env的DB_HOST改成postgres
 ```shell
-docker-compose up postgres -d
+docker-compose up postgres api -d
 ```
+
+## Precautions
+golang version 請用1.18以上
+1.17有相容性問題
 
 ## test
 ```shell
