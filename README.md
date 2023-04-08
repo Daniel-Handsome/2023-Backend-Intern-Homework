@@ -38,7 +38,10 @@ jkf-star
 ```
 
 ## docker start
+step 1
 將.env的DB_HOST改成postgres
+
+step 2
 ```shell
 docker-compose up postgres api -d
 ```
