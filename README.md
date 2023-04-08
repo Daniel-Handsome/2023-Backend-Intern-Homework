@@ -55,14 +55,14 @@ golang version 請用1.18以上
 go test ./test -v -failfast
 ```
 ## storage 的選擇
-選擇postgres的原因有幾點
-   1 在transaction方面postgres處理比較好，面對高併發的處理上也比較好
-   2 postgres是使用head, 所以在 Range Query 的時候select多的欄位的話postgres比較有優勢，因為不用從non-clustered index 取得 clustered index 再去查詢
-   3 對於當前的的個人推薦因為需要大量刪除跟新增node對應的文章，所以如果用fk去用在效能及修改上會比較麻煩，而用postgres的array會比較方便動態增減
-   4 postgres的分區有分範圍分區跟子分區，比起mysql更加方便，可以依照想要的欄位去分區
+###選擇postgres的原因有幾點
+   1. 在transaction方面postgres處理比較好，面對高併發的處理上也比較好
+   2. postgres是使用head, 所以在 Range Query 的時候select多的欄位的話postgres比較有優勢，因為不用從non-clustered index 取得 clustered index 再去查詢
+   3. 對於當前的的個人推薦因為需要大量刪除跟新增node對應的文章，所以如果用fk去用在效能及修改上會比較麻煩，而用postgres的array會比較方便動態增減
+   4. postgres的分區有分範圍分區跟子分區，比起mysql更加方便，可以依照想要的欄位去分區
 綜合以上幾點對於目前的功能開發來說，postgres會是較優的選擇。
 
-可以想想除了⼀筆筆刪之外怎麼清除更有效率
-   1 目前是想到用分區去做，可以依照時間去分區，再依照時間一個一個刪除
-   2 直接刪除table在create建立
-   3 TRUNCATE TABLE 清空全部
+###可以想想除了⼀筆筆刪之外怎麼清除更有效率
+   1. 目前是想到用分區去做，可以依照時間去分區，再依照時間一個一個刪除
+   2. 直接刪除table在create建立
+   3. TRUNCATE TABLE 清空全部
