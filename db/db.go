@@ -3,15 +3,13 @@ package db
 import (
 	"database/sql"
 	"fmt"
-	"path/filepath"
-	"runtime"
-
 	"github.com/Daniel-Handsome/2023-Backend-intern-Homework/utils"
-	_ "github.com/lib/pq"
-
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
+	_ "github.com/lib/pq"
+	"path/filepath"
+	"runtime"
 )
 
 var db *sql.DB
@@ -50,11 +48,17 @@ func initMigrate(db *sql.DB, database string) error {
 	dir := filepath.Dir(file) + "/migrations"
 	migrationPath := "file://" + dir
 
+	//windows 路径分隔符转换为 Linux 路径分隔符
+	if runtime.GOOS == "windows" {
+		migrationPath = "file://" + filepath.ToSlash(dir)
+	}
+	fmt.Println("test", migrationPath)
 	m, err := migrate.NewWithDatabaseInstance(
 		migrationPath,
 		database,
 		driver,
 	)
+
 	// or m.Step(2) if you want to explicitly set the number of migrations to run
 
 	if err := m.Up(); err != nil && err != migrate.ErrNoChange {

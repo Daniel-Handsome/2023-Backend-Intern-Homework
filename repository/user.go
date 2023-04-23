@@ -86,6 +86,13 @@ func (repo *userRepository) Delete(ctx context.Context, id int64) error {
 func (r *userRepository) GetPageLinkedList(ctx context.Context, uuid string, t model.PageLinkedListType) (*model.PageLinkedList, error) {
 	var pageLinkedList *model.PageLinkedList
 
+	//r.FilterDecoratorsFromRequest(
+	//	map[string]string{
+	//		"name": "test",
+	//	},
+	//	"github.com/Daniel-Handsome/2023-Backend-intern-Homework/repository/filter",
+	//)
+
 	user, err := r.FindByUuid(ctx, uuid)
 	if err != nil {
 		return nil, err
