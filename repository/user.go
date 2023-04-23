@@ -22,39 +22,43 @@ type UserRepository interface {
 
 type userRepository struct {
 	*BaseRepo
+	model *model.User
 }
 
 func NewUserRepository(orm *gorm.DB) UserRepository {
-	return &userRepository{NewRepo(orm.Model(model.User{}))}
+	return &userRepository{
+		BaseRepo: &BaseRepo{
+			orm: orm,
+		},
+		model: &model.User{},
+	}
 }
 
 func (repo *userRepository) FindByID(ctx context.Context, id int64) (*model.User, error) {
-	var user model.User
-	err := repo.orm.WithContext(ctx).Where("id = ?", id).First(&user).Error
+	err := repo.orm.WithContext(ctx).Where("id = ?", id).First(repo.model).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, ErrUserNotFound
 		}
 		return nil, err
 	}
-	return &user, nil
+	return repo.model, nil
 }
 
 func (repo *userRepository) FindByUuid(ctx context.Context, uuid string) (*model.User, error) {
-	var user model.User
-	err := repo.orm.WithContext(ctx).Where("uuid = ?", uuid).First(&user).Error
+	err := repo.orm.WithContext(ctx).Where("uuid = ?", uuid).First(repo.model).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, ErrUserNotFound
 		}
 		return nil, err
 	}
-	return &user, nil
+	return repo.model, nil
 }
 
 func (repo *userRepository) FindByEmail(ctx context.Context, email string) (*model.User, error) {
 	var user model.User
-	err := repo.orm.WithContext(ctx).Where("email = ?", email).First(&user).Error
+	err := repo.orm.WithContext(ctx).Where("email = ?", email).First(repo.model).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, ErrUserNotFound

@@ -19,10 +19,16 @@ type PageNodeRepository interface {
 
 type pageNodeRepository struct {
 	*BaseRepo
+	model *model.PageNode
 }
 
 func NewPageNodeRepository(orm *gorm.DB) PageNodeRepository {
-	return &pageNodeRepository{NewRepo(orm.Model(model.PageNode{}))}
+	return &pageNodeRepository{
+		BaseRepo: &BaseRepo{
+			orm: orm,
+		},
+		model: &model.PageNode{},
+	}
 }
 
 func (repo pageNodeRepository) GetByUuid(ctx context.Context, uuid string) (model.PageNode, error) {

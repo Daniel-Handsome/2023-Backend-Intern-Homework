@@ -1,19 +1,14 @@
 package repository
 
-import "gorm.io/gorm"
+import (
+	"github.com/Daniel-Handsome/2023-Backend-intern-Homework/model"
+	"gorm.io/gorm"
+)
 
 type BaseRepo struct {
 	orm *gorm.DB
 }
 
-func NewRepo(orm *gorm.DB) *BaseRepo {
+func NewRepo(orm *gorm.DB, model model.BaseModel) *BaseRepo {
 	return &BaseRepo{orm: orm}
-}
-
-func (r *BaseRepo) Transaction(execute func(tx *gorm.DB) error) error {
-	return r.orm.Transaction(execute)
-}
-
-func (r *BaseRepo) Begin() *gorm.DB {
-	return r.orm.Begin()
 }

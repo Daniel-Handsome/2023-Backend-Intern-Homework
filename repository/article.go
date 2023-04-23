@@ -15,15 +15,20 @@ type ArticleRepository interface {
 	GetIdsSortByOmitId(ctx context.Context, ids []int64, column model.OrderColumn) (newIds []int64, err error)
 	GetPage(ctx context.Context, ids []int64) (articles []model.Article, err error)
 	UpdateArticlesPage(ctx context.Context) error
-	Transaction(execute func(tx *gorm.DB) error) error
 }
 
 type articleRepository struct {
 	*BaseRepo
+	model *model.Article
 }
 
 func NewArticleRepository(orm *gorm.DB) ArticleRepository {
-	return &articleRepository{NewRepo(orm.Model(model.Article{}))}
+	return &articleRepository{
+		BaseRepo: &BaseRepo{
+			orm: orm,
+		},
+		model: &model.Article{},
+	}
 }
 
 func (repo *articleRepository) GetPage(ctx context.Context, ids []int64) (articles []model.Article, err error) {

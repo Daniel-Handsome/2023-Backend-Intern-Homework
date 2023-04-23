@@ -15,10 +15,16 @@ type PageLinkedListRepository interface {
 
 type pageLinkedListRepository struct {
 	*BaseRepo
+	model *model.PageLinkedList
 }
 
 func NewPageLinkedListRepository(orm *gorm.DB) PageLinkedListRepository {
-	return &pageLinkedListRepository{NewRepo(orm.Model(model.PageLinkedList{}))}
+	return &pageLinkedListRepository{
+		BaseRepo: &BaseRepo{
+			orm: orm,
+		},
+		model: &model.PageLinkedList{},
+	}
 }
 
 func (repo pageLinkedListRepository) GetByHeadKey(ctx context.Context, headKey string) (pageLinkedList model.PageLinkedList, err error) {
